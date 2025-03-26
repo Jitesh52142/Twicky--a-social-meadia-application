@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: django-twicky-app
+    runtime: python
+    region: oregon  # Or frankfurt, depending on location
+    plan: free
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py collectstatic --no-input
+      python manage.py migrate
+    startCommand: gunicorn twiky_project.wsgi:application
+    envVars:
+      - key: DATABASE_URL
+        value: 'sqlite:///db.sqlite3'

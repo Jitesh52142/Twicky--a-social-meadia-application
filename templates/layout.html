@@ -1,0 +1,227 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
+          rel="stylesheet" 
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
+          crossorigin="anonymous">
+
+    <style>
+
+        /* 🌙 Dark Theme Background */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 🌟 Full-page layout wrapper */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;          /* ✅ Full viewport height */
+        }
+
+        .main-content {
+            flex: 1;                     /* ✅ Pushes footer down */
+        }
+
+        /* 🔥 Navbar Styling */
+        .navbar {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff !important;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            color: #ffcc00 !important;
+            transform: scale(1.1);
+        }
+
+        .nav-link {
+            color: #ddd !important;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #ffcc00 !important;
+            transform: scale(1.05);
+        }
+
+        /* 🔥 Buttons with gradient and hover effect */
+        .btn-custom {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s;
+        }
+
+        .btn-custom:hover {
+            background: linear-gradient(135deg, #ffcc00, #ff6699);
+            transform: scale(1.05);
+            box-shadow: 0 0 12px #ffcc00;
+        }
+
+        .btn-danger {
+            background: #ff4d4d;
+            transition: all 0.3s;
+        }
+
+        .btn-danger:hover {
+            background: #ff1a1a;
+            transform: scale(1.05);
+            box-shadow: 0 0 12px #ff4d4d;
+        }
+
+        .btn-primary {
+            background: #1e90ff;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #007bff;
+            transform: scale(1.05);
+            box-shadow: 0 0 12px #1e90ff;
+        }
+
+        /* 📝 Tweet Card Styling */
+        .tweet-card {
+            background: #1e1e1e;
+            color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+            transition: all 0.3s;
+        }
+
+        .tweet-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 18px #00f7ff;
+        }
+
+        /* 🔥 Main Content */
+        .container {
+            margin-top: 50px;
+            padding: 30px;
+            background: #1e1e1e;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+        }
+
+        /* 💎 Footer Styling (Fixed at Bottom) */
+        footer {
+            background: #0f0c29;
+            color: #fff;
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.7);
+            width: 100%;
+        }
+
+        footer a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+    </style>
+
+    <title>
+        {% block title %}
+        Twicky - The Social Media App
+        {% endblock %}
+    </title>
+</head>
+
+<body>
+
+<div class="wrapper">   <!-- ✅ Wrapper to maintain full height -->
+
+    <!-- 🌟 Navbar Section -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+
+            <!-- Twicky Logo -->
+            <a class="navbar-brand" href="{% url 'Twickylist' %}">🌌 TWICKY</a>
+
+            <!-- Mobile Toggler -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" 
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar Items -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'Twickylist' %}">
+                            🏠 Tweet Home
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Authentication Buttons -->
+                <div class="d-flex align-items-center">
+                    {% if user.is_authenticated %}
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button class="btn btn-danger btn-custom me-2" type="submit">
+                                🚪 Logout
+                            </button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'register' %}" class="btn btn-primary btn-custom me-2">
+                            📝 Register
+                        </a>
+                        <a href="{% url 'login' %}" class="btn btn-success btn-custom">
+                            🔑 Login
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 🌟 Main Content Section -->
+    <div class="main-content">
+        <div class="container mt-4">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <!-- 💎 Footer Section -->
+    <footer>
+        <p>&copy; 2025 Twicky. Built with 💙 by 
+            <a href="https://github.com/Jitesh52142" target="_blank">Jitesh Bawaskar</a>
+        </p>
+    </footer>
+
+</div>  <!-- ✅ End of Wrapper -->
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-w76A4pJl5QQ3dQXNJ8K7FqQFpzZ6B8u7s6CkBTKItA3CZzA7wwUl+MZdfFYTB+Og" 
+        crossorigin="anonymous"></script>
+
+</body>
+</html>

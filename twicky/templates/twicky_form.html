@@ -1,0 +1,111 @@
+{% extends "layout.html" %}
+
+{% block title %}  
+🚀 Twicky - Create or Edit Tweet  
+{% endblock %}
+
+{% block content %}  
+<div class="container my-5">
+
+    <!-- 🔥 Page Title -->
+    <div class="text-center mb-4">
+        <h1 class="display-4 fw-bold">
+            {% if form.instance.pk %}
+                ✏️ Edit Tweet 
+            {% else %}
+                🐦 Create Tweet
+            {% endif %}
+        </h1>
+    </div>
+
+    <!-- 🌟 Stylish Form Container -->
+    <div class="card shadow-lg border-0 p-5 mx-auto" 
+         style="max-width: 700px; background: rgba(25, 25, 25, 0.8); 
+         backdrop-filter: blur(12px); border-radius: 16px; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.9);">
+        
+        <div class="card-body">
+            
+            <!-- 🛠️ Form -->
+            <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                {% csrf_token %}
+
+                <!-- 🔥 Tweet Content -->
+                <div class="mb-4">
+                    <label for="id_text" class="form-label fw-bold text-white">Tweet Content</label>
+                    {{ form.text }}
+                </div>
+
+                <!-- 🌟 Image Upload -->
+                <div class="mb-4">
+                    <label for="id_photos" class="form-label fw-bold text-white">Upload Image</label>
+                    
+                    <!-- ✅ Manual Image Upload with Stylish Field -->
+                    <input type="file" name="photo" id="id_photos" class="form-control" 
+                           style="border-radius: 12px; transition: 0.3s; 
+                           background: #2c2c2c; color: #fff;">
+                </div>
+
+                <!-- 🚀 Buttons -->
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    
+                    <!-- ⬅️ Back Button -->
+                    <a href="{% url 'Twickylist' %}" class="btn btn-outline-light px-4 py-2" 
+                       style="border-radius: 30px; transition: 0.3s;">
+                        ⬅️ Back to Home
+                    </a>
+
+                    <!-- 🌟 Submit Button -->
+                    <button type="submit" class="btn px-5 py-2" 
+                            style="background: linear-gradient(135deg, #6a11cb, #2575fc); 
+                            color: #fff; border: none; border-radius: 30px; transition: 0.3s;">
+                        🚀 {% if form.instance.pk %} Update Tweet {% else %} Post Tweet {% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 🌟 Footer -->
+    <div class="text-center mt-5">
+        <p class="text-muted">
+            Built with ❤️ by <strong>Twicky</strong> Team
+        </p>
+    </div>
+
+</div>
+
+<!-- 🔥 Custom Styling -->
+<style>
+    /* Stylish Form Fields */
+    .form-control {
+        background: #2c2c2c;
+        color: #fff;
+        border-radius: 12px;
+        border: 2px solid transparent;
+        transition: 0.3s;
+        padding: 12px 18px;
+    }
+
+    .form-control:focus {
+        box-shadow: 0 0 12px #00f7ff;
+        border-color: #00f7ff;
+        outline: none;
+    }
+
+    /* Submit Button Hover Effect */
+    button:hover {
+        background: linear-gradient(135deg, #ffcc00, #ff6699);
+        transform: scale(1.05);
+        box-shadow: 0 0 18px #ffcc00;
+    }
+
+    /* Back Button Hover Effect */
+    .btn-outline-light:hover {
+        background: #ffcc00;
+        color: #000;
+        transform: scale(1.05);
+        box-shadow: 0 0 12px #ffcc00;
+    }
+</style>
+
+{% endblock %}
