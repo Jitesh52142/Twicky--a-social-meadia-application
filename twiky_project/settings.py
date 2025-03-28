@@ -8,12 +8,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-#sla7u9uuva*6v+4gt3)whx2mf74+fc715w8punbo24rmpzzjr'
 DEBUG = True
 
-# ✅ Allowed hosts
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    'trial-twicky.onrender.com',  # Add your Render URL here
+    'trial-twicky.onrender.com',      # Old Render URL
+    'trial-twicky-3.onrender.com',    # New Render URL (add this)
 ]
+
 
 # ✅ Application definition
 INSTALLED_APPS = [
