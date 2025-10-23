@@ -11,7 +11,7 @@ services:
       - key: PYTHON_VERSION
         value: 3.11.9
       - key: DEBUG
-        value: False
+        value: True
       - key: SECRET_KEY
         generateValue: true
       - key: ALLOWED_HOSTS

@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ✅ Security settings
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-#sla7u9uuva*6v+4gt3)whx2mf74+fc715w8punbo24rmpzzjr')
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = config('DEBUG', default=True, cast=bool)  # Temporarily True to see errors
 
 # Force rebuild marker - Vercel cache fix - ULTRA AGGRESSIVE
 VERCEL_FORCE_REBUILD = "2024-10-24-0030-NO-MAKEDIRS"
