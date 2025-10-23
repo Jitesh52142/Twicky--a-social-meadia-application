@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',  # For HTTPS runserver_plus
     'twicky',  # Your app
 ]
 
@@ -58,17 +59,17 @@ TEMPLATES = [
 # ✅ WSGI Application
 WSGI_APPLICATION = 'twiky_project.wsgi.application'
 
-# ✅ Database - MongoDB Configuration
+# ✅ Database - SQLite for Vercel (MongoDB causes issues with serverless)
+# For production with MongoDB, use a different hosting service or containerized deployment
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'twicky',
-        'ENFORCE_SCHEMA': False,
-        'CLIENT': {
-            'host': config('MONGODB_URI', default='mongodb+srv://Jitesh001:Jitesh001@twicky.fxotzly.mongodb.net/'),
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# MongoDB connection (for future use with custom models)
+MONGODB_URI = config('MONGODB_URI', default='mongodb+srv://Jitesh001:Jitesh001@twicky.fxotzly.mongodb.net/')
 
 # ✅ Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -95,7 +96,10 @@ if os.path.exists(static_dir):
     STATICFILES_DIRS = [static_dir]
 
 # WhiteNoise configuration for static files
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+if not DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+else:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 # ✅ Media configuration for image uploads
 MEDIA_URL = '/media/'

@@ -10,12 +10,13 @@ Twicky - A Social Media Platform
     <!-- Header Section -->
     <div class="text-center mb-5">
         <h1 class="display-4 fw-bold text-white mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
-            <i class="fas fa-comments"></i> Your Feed
+            <i class="fas fa-stream"></i> Tweet Feed
         </h1>
-        <p class="text-muted">Share your thoughts with the world</p>
+        <p class="text-muted fs-5">Share your thoughts with the world</p>
     </div>
 
-    <!-- Create Tweet Button -->
+    <!-- Create Tweet Button (Only for authenticated users) -->
+    {% if user.is_authenticated %}
     <div class="mb-5 text-center">
         <a class="btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-lg" 
            href="{% url 'Twicky_create' %}" 
@@ -23,6 +24,14 @@ Twicky - A Social Media Platform
             <i class="fas fa-plus-circle"></i> Create New Tweet
         </a>
     </div>
+    {% else %}
+    <div class="alert alert-info text-center mb-5" style="background: rgba(37, 117, 252, 0.2); border: 2px solid rgba(37, 117, 252, 0.5); border-radius: 15px;">
+        <i class="fas fa-info-circle"></i> 
+        <a href="{% url 'login' %}" class="text-decoration-none fw-bold" style="color: #2575fc;">Login</a> or 
+        <a href="{% url 'register' %}" class="text-decoration-none fw-bold" style="color: #2575fc;">Register</a> 
+        to create your own tweets!
+    </div>
+    {% endif %}
 
     <!-- Tweets Grid Layout -->
     <div class="row g-4 justify-content-center">

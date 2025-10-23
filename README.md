@@ -63,8 +63,8 @@
 
 ### **Prerequisites**
 - Python 3.9 or higher
-- MongoDB Atlas account (or local MongoDB)
 - Git
+- (Optional) MongoDB Atlas account for MongoDB deployment
 
 ### **1. Clone the Repository**
 ```bash
@@ -114,11 +114,18 @@ python manage.py createsuperuser
 ```
 
 ### **8. Run Development Server**
+
+**For HTTP (standard):**
 ```bash
 python manage.py runserver
 ```
 
-Visit `http://localhost:8000` to see your application!
+**For HTTPS (with SSL):**
+```bash
+python manage.py runserver_plus --cert-file cert
+```
+
+Visit `http://localhost:8000` (or `https://localhost:8000` for SSL) to see your application!
 
 ---
 
