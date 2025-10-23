@@ -6,7 +6,7 @@ services:
     plan: free
     branch: main
     buildCommand: "./build.sh"
-    startCommand: "gunicorn twiky_project.wsgi:application --bind 0.0.0.0:$PORT --workers 2"
+    startCommand: "gunicorn twiky_project.wsgi --bind 0.0.0.0:$PORT"
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.9
