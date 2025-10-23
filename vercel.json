@@ -16,6 +16,11 @@
       "src": "/(.*)",
       "dest": "twiky_project/wsgi.py"
     }
-  ]
+  ],
+  "env": {
+    "VERCEL": "1",
+    "DEBUG": "False",
+    "ALLOWED_HOSTS": "localhost,127.0.0.1,.vercel.app"
+  }
 }
 
