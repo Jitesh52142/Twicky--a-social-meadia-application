@@ -1,0 +1,5 @@
+ULTRA AGGRESSIVE FORCE REBUILD - NO MAKEDIRS
+Timestamp: 2024-10-24-0030
+Issue: OSError: [Errno 30] Read-only file system
+Fix: Completely removed os.makedirs call
+Status: ULTRA AGGRESSIVE FIX APPLIED
