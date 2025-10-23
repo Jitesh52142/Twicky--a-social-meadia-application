@@ -1,14 +1,28 @@
 services:
   - type: web
-    name: django-twicky-app
-    runtime: python
-    region: oregon  # Or frankfurt, depending on location
+    name: twicky-social-media
+    env: python
+    region: oregon
     plan: free
-    buildCommand: |
-      pip install -r requirements.txt
-      python manage.py collectstatic --no-input
-      python manage.py migrate
-    startCommand: gunicorn twiky_project.wsgi:application
+    branch: main
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate"
+    startCommand: "gunicorn twiky_project.wsgi:application"
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DEBUG
+        value: False
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_HOSTS
+        value: .onrender.com
       - key: DATABASE_URL
-        value: 'sqlite:///db.sqlite3'
+        fromDatabase:
+          name: twicky-db
+          property: connectionString
+
+databases:
+  - name: twicky-db
+    plan: free
+    databaseName: twicky
+    user: twicky

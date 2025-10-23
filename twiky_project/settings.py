@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
-from decouple import config 
+from decouple import config
+import dj_database_url 
 
 # ✅ Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -12,7 +13,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 # Force rebuild marker - Vercel cache fix - ULTRA AGGRESSIVE
 VERCEL_FORCE_REBUILD = "2024-10-24-0030-NO-MAKEDIRS"
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.vercel.app').split(',')
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.vercel.app,.onrender.com').split(',')
 
 
 # ✅ Application definition
@@ -65,14 +66,24 @@ TEMPLATES = [
 # ✅ WSGI Application
 WSGI_APPLICATION = 'twiky_project.wsgi.application'
 
-# ✅ Database - SQLite for Vercel (MongoDB causes issues with serverless)
-# For production with MongoDB, use a different hosting service or containerized deployment
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# ✅ Database - PostgreSQL for Render, SQLite for local development
+if os.environ.get('DATABASE_URL'):
+    # Render/Production with PostgreSQL
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
     }
-}
+else:
+    # Local development with SQLite
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # MongoDB connection (for future use with custom models)
 MONGODB_URI = config('MONGODB_URI', default='mongodb+srv://Jitesh001:Jitesh001@twicky.fxotzly.mongodb.net/')
@@ -94,12 +105,12 @@ USE_TZ = True
 # ✅ Static & Media Files Configuration
 STATIC_URL = '/static/'
 
-# Vercel-compatible static files configuration - NO DIRECTORY CREATION
+# Platform-specific static files configuration
 if os.environ.get('VERCEL'):
     # On Vercel, use /tmp for static files (writable directory)
     STATIC_ROOT = '/tmp/staticfiles'
 else:
-    # Local development
+    # Render/Railway/Local development
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # WhiteNoise configuration for static files
@@ -110,6 +121,12 @@ STATICFILES_DIRS = []
 static_dir = os.path.join(BASE_DIR, 'static')
 if os.path.exists(static_dir):
     STATICFILES_DIRS = [static_dir]
+
+# Media files for Render
+if os.environ.get('RENDER'):
+    # In production on Render, you might want to use cloud storage like S3
+    # For now, we'll use local storage
+    pass
 
 # ✅ Media configuration for image uploads
 MEDIA_URL = '/media/'
