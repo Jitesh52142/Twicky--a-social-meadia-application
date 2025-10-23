@@ -9,8 +9,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-#sla7u9uuva*6v+4gt3)whx2mf74+fc715w8punbo24rmpzzjr')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-# Force rebuild marker - Vercel cache fix
-VERCEL_FORCE_REBUILD = "2024-10-24-0019"
+# Force rebuild marker - Vercel cache fix - AGGRESSIVE
+VERCEL_FORCE_REBUILD = "2024-10-24-0020-STATIC-FIX"
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.vercel.app').split(',')
 
@@ -94,24 +94,27 @@ USE_TZ = True
 # ✅ Static & Media Files Configuration
 STATIC_URL = '/static/'
 
-# Use /tmp for static files on Vercel (writable directory)
+# Vercel-compatible static files configuration
 if os.environ.get('VERCEL'):
+    # On Vercel, use /tmp for static files (writable directory)
     STATIC_ROOT = '/tmp/staticfiles'
+    # Don't create directories on Vercel - let WhiteNoise handle it
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 else:
+    # Local development
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Create staticfiles directory only in non-Vercel environments
-if not os.environ.get('VERCEL'):
-    os.makedirs(STATIC_ROOT, exist_ok=True)
+    # Create staticfiles directory only in non-Vercel environments
+    try:
+        os.makedirs(STATIC_ROOT, exist_ok=True)
+    except OSError:
+        pass  # Ignore if directory creation fails
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Create static directory if it doesn't exist
 STATICFILES_DIRS = []
 static_dir = os.path.join(BASE_DIR, 'static')
 if os.path.exists(static_dir):
     STATICFILES_DIRS = [static_dir]
-
-# WhiteNoise configuration for static files
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ✅ Media configuration for image uploads
 MEDIA_URL = '/media/'

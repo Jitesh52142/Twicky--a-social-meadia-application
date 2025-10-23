@@ -1,0 +1,4 @@
+AGGRESSIVE FORCE REBUILD - STATIC FILES FIX
+Timestamp: 2024-10-24-0020
+Issue: OSError: [Errno 30] Read-only file system
+Fix: Removed os.makedirs call for Vercel
