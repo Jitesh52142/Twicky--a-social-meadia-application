@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "name": "twicky_social_media",
   "builds": [
     {
       "src": "twiky_project/wsgi.py",
