@@ -129,30 +129,56 @@ Visit `http://localhost:8000` (or `https://localhost:8000` for SSL) to see your 
 
 ---
 
-## 🌐 **Vercel Deployment**
+## 🌐 **Deployment**
 
-### **1. Install Vercel CLI**
+### ⚠️ **Important: Vercel Limitations**
+
+Vercel has serverless limitations that make it challenging for Django apps with file uploads:
+- No persistent file storage (uploaded images won't persist)
+- Large dependency size limits
+- Cold start delays
+
+### **Recommended Platforms:**
+
+#### 1. **Railway** (Best Choice ⭐)
 ```bash
-npm i -g vercel
+# Install Railway CLI
+npm i -g @railway/cli
+
+# Deploy
+railway login
+railway init
+railway up
 ```
 
-### **2. Configure Environment Variables**
-In your Vercel dashboard, add these environment variables:
-- `SECRET_KEY` - Your Django secret key
-- `DEBUG` - Set to `False` for production
-- `ALLOWED_HOSTS` - Your Vercel domain
-- `MONGODB_URI` - Your MongoDB connection string
+**Why Railway?**
+- ✅ Persistent storage for images
+- ✅ PostgreSQL included free
+- ✅ No serverless limitations
+- ✅ Automatic HTTPS
 
-### **3. Deploy to Vercel**
-```bash
-vercel --prod
+See `VERCEL_DEPLOYMENT_GUIDE.md` for detailed instructions.
+
+#### 2. **Render**
+- Easy deployment with `render-build.sh`
+- PostgreSQL included
+- Persistent disk storage
+- See `DEPLOYMENT_CHECKLIST.md`
+
+#### 3. **Vercel (With Limitations)**
+If you still want to use Vercel:
+1. Use external storage (Cloudinary, AWS S3)
+2. Use Vercel Postgres or MongoDB Atlas
+3. Use `requirements-vercel.txt` instead of `requirements.txt`
+4. See `VERCEL_DEPLOYMENT_GUIDE.md` for fixes
+
+### **Environment Variables (All Platforms)**
 ```
-
-### **4. Important Notes**
-- The `vercel.json` file is already configured
-- Static files are handled by WhiteNoise
-- Media files should be served from a cloud service (AWS S3, Cloudinary) in production
-- MongoDB Atlas handles the database
+SECRET_KEY=your-secret-key-here
+DEBUG=False
+ALLOWED_HOSTS=your-domain.com
+DATABASE_URL=your-database-url (if not SQLite)
+```
 
 ---
 

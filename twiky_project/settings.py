@@ -20,9 +20,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_extensions',  # For HTTPS runserver_plus
     'twicky',  # Your app
 ]
+
+# Add django_extensions only in development (not on Vercel)
+if DEBUG and os.environ.get('VERCEL') != '1':
+    INSTALLED_APPS.append('django_extensions')
 
 # ✅ Middleware
 MIDDLEWARE = [
