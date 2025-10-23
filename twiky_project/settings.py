@@ -92,6 +92,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+# Create staticfiles directory if it doesn't exist (for Vercel)
+os.makedirs(STATIC_ROOT, exist_ok=True)
+
 # Create static directory if it doesn't exist
 STATICFILES_DIRS = []
 static_dir = os.path.join(BASE_DIR, 'static')
@@ -99,10 +102,7 @@ if os.path.exists(static_dir):
     STATICFILES_DIRS = [static_dir]
 
 # WhiteNoise configuration for static files
-if not DEBUG:
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-else:
-    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ✅ Media configuration for image uploads
 MEDIA_URL = '/media/'
@@ -116,8 +116,9 @@ LOGOUT_REDIRECT_URL = '/twicky/'
 # ✅ Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ✅ Security Settings for Production
-if not DEBUG:
+# ✅ Security Settings for Production (Disabled for Vercel due to serverless)
+# Note: Vercel handles HTTPS automatically
+if not DEBUG and os.environ.get('VERCEL') != '1':
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
