@@ -1,14 +1,115 @@
 {% extends "layout.html" %}
 
-{% block content %}<=
+{% block title %}Login - Twicky{% endblock %}
 
-<h2> Login Form </h2>
+{% block content %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-primary">Login</button>
-</form>
-<p> Dont have and account? <a href="{% url 'register'%}" >Register here</a></p>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-lg border-0 p-5" 
+         style="max-width: 480px; width: 100%; background: linear-gradient(135deg, #1e1e2f 0%, #2d2d44 100%); 
+         border-radius: 20px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);">
+        
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <div class="mb-3">
+                <i class="fas fa-user-circle" style="font-size: 4rem; color: #6a11cb;"></i>
+            </div>
+            <h2 class="fw-bold text-white mb-2">Welcome Back!</h2>
+            <p class="text-muted">Login to continue to Twicky</p>
+        </div>
+
+        <!-- Login Form -->
+        <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+            
+            <!-- Username Field -->
+            <div class="mb-4">
+                <label for="id_username" class="form-label text-white fw-bold">
+                    <i class="fas fa-user"></i> Username
+                </label>
+                <input type="text" 
+                       name="username" 
+                       id="id_username" 
+                       class="form-control form-control-lg" 
+                       placeholder="Enter your username"
+                       style="background: #2c2c3e; color: #fff; border: 2px solid #444; border-radius: 12px; padding: 14px;"
+                       required>
+            </div>
+
+            <!-- Password Field -->
+            <div class="mb-4">
+                <label for="id_password" class="form-label text-white fw-bold">
+                    <i class="fas fa-lock"></i> Password
+                </label>
+                <input type="password" 
+                       name="password" 
+                       id="id_password" 
+                       class="form-control form-control-lg" 
+                       placeholder="Enter your password"
+                       style="background: #2c2c3e; color: #fff; border: 2px solid #444; border-radius: 12px; padding: 14px;"
+                       required>
+            </div>
+
+            <!-- Error Messages -->
+            {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+                <i class="fas fa-exclamation-triangle"></i> Invalid username or password
+            </div>
+            {% endif %}
+
+            <!-- Submit Button -->
+            <div class="d-grid mb-4">
+                <button type="submit" 
+                        class="btn btn-lg py-3" 
+                        style="background: linear-gradient(135deg, #6a11cb, #2575fc); 
+                        color: #fff; border: none; border-radius: 12px; font-weight: bold; 
+                        transition: all 0.3s;">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </div>
+        </form>
+
+        <!-- Register Link -->
+        <div class="text-center">
+            <p class="text-muted mb-0">
+                Don't have an account? 
+                <a href="{% url 'register' %}" 
+                   class="text-decoration-none fw-bold" 
+                   style="color: #6a11cb; transition: all 0.3s;">
+                    Register here
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+    .form-control:focus {
+        background: #2c2c3e;
+        color: #fff;
+        border-color: #6a11cb;
+        box-shadow: 0 0 15px rgba(106, 17, 203, 0.5);
+    }
+
+    .btn:hover {
+        background: linear-gradient(135deg, #2575fc, #6a11cb);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(106, 17, 203, 0.4);
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+    }
+
+    a:hover {
+        color: #2575fc !important;
+        text-decoration: underline !important;
+    }
+</style>
+
+<!-- Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 {% endblock %}

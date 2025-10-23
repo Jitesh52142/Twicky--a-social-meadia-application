@@ -1,10 +1,154 @@
 {% extends "layout.html" %}
 
+{% block title %}Register - Twicky{% endblock %}
+
 {% block content %}
-<h2> Registration Page </h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-primary">Register</button>
-</form>
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh; padding: 30px 0;">
+    <div class="card shadow-lg border-0 p-5" 
+         style="max-width: 520px; width: 100%; background: linear-gradient(135deg, #1e1e2f 0%, #2d2d44 100%); 
+         border-radius: 20px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);">
+        
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <div class="mb-3">
+                <i class="fas fa-user-plus" style="font-size: 4rem; color: #6a11cb;"></i>
+            </div>
+            <h2 class="fw-bold text-white mb-2">Create Account</h2>
+            <p class="text-muted">Join Twicky today and start sharing!</p>
+        </div>
+
+        <!-- Registration Form -->
+        <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+            
+            <!-- Username Field -->
+            <div class="mb-4">
+                <label for="id_username" class="form-label text-white fw-bold">
+                    <i class="fas fa-user"></i> Username
+                </label>
+                <input type="text" 
+                       name="username" 
+                       id="id_username" 
+                       class="form-control form-control-lg" 
+                       placeholder="Choose a username"
+                       style="background: #2c2c3e; color: #fff; border: 2px solid #444; border-radius: 12px; padding: 14px;"
+                       required>
+                <small class="text-muted">Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</small>
+            </div>
+
+            <!-- Email Field -->
+            <div class="mb-4">
+                <label for="id_email" class="form-label text-white fw-bold">
+                    <i class="fas fa-envelope"></i> Email
+                </label>
+                <input type="email" 
+                       name="email" 
+                       id="id_email" 
+                       class="form-control form-control-lg" 
+                       placeholder="Enter your email"
+                       style="background: #2c2c3e; color: #fff; border: 2px solid #444; border-radius: 12px; padding: 14px;"
+                       required>
+            </div>
+
+            <!-- Password Field -->
+            <div class="mb-4">
+                <label for="id_password1" class="form-label text-white fw-bold">
+                    <i class="fas fa-lock"></i> Password
+                </label>
+                <input type="password" 
+                       name="password1" 
+                       id="id_password1" 
+                       class="form-control form-control-lg" 
+                       placeholder="Create a password"
+                       style="background: #2c2c3e; color: #fff; border: 2px solid #444; border-radius: 12px; padding: 14px;"
+                       required>
+                <small class="text-muted">Your password must contain at least 8 characters and can't be entirely numeric.</small>
+            </div>
+
+            <!-- Confirm Password Field -->
+            <div class="mb-4">
+                <label for="id_password2" class="form-label text-white fw-bold">
+                    <i class="fas fa-lock"></i> Confirm Password
+                </label>
+                <input type="password" 
+                       name="password2" 
+                       id="id_password2" 
+                       class="form-control form-control-lg" 
+                       placeholder="Confirm your password"
+                       style="background: #2c2c3e; color: #fff; border: 2px solid #444; border-radius: 12px; padding: 14px;"
+                       required>
+            </div>
+
+            <!-- Error Messages -->
+            {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+                <i class="fas fa-exclamation-triangle"></i>
+                {% for field, errors in form.errors.items %}
+                    <div><strong>{{ field }}:</strong> {{ errors|join:", " }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Submit Button -->
+            <div class="d-grid mb-4">
+                <button type="submit" 
+                        class="btn btn-lg py-3" 
+                        style="background: linear-gradient(135deg, #6a11cb, #2575fc); 
+                        color: #fff; border: none; border-radius: 12px; font-weight: bold; 
+                        transition: all 0.3s;">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+            </div>
+        </form>
+
+        <!-- Login Link -->
+        <div class="text-center">
+            <p class="text-muted mb-0">
+                Already have an account? 
+                <a href="{% url 'login' %}" 
+                   class="text-decoration-none fw-bold" 
+                   style="color: #6a11cb; transition: all 0.3s;">
+                    Login here
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+    .form-control:focus {
+        background: #2c2c3e;
+        color: #fff;
+        border-color: #6a11cb;
+        box-shadow: 0 0 15px rgba(106, 17, 203, 0.5);
+    }
+
+    .btn:hover {
+        background: linear-gradient(135deg, #2575fc, #6a11cb);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(106, 17, 203, 0.4);
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+    }
+
+    a:hover {
+        color: #2575fc !important;
+        text-decoration: underline !important;
+    }
+
+    small.text-muted {
+        display: block;
+        margin-top: 5px;
+        font-size: 0.85rem;
+    }
+</style>
+
+<!-- Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 {% endblock %}

@@ -13,90 +13,137 @@
           crossorigin="anonymous">
 
     <style>
-
-        /* 🌙 Dark Theme Background */
+        /* 🌙 Dark Theme Background with Gradient */
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         /* 🌟 Full-page layout wrapper */
         .wrapper {
             display: flex;
             flex-direction: column;
-            min-height: 100vh;          /* ✅ Full viewport height */
+            min-height: 100vh;
         }
 
         .main-content {
-            flex: 1;                     /* ✅ Pushes footer down */
+            flex: 1;
         }
 
-        /* 🔥 Navbar Styling */
+        /* 📱 Responsive Container */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+        }
+
+        /* 🔥 Navbar Styling - Professional & Modern */
         .navbar {
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+            background: rgba(15, 12, 41, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
             transition: all 0.3s ease;
+            padding: 1rem 0;
         }
 
         .navbar-brand {
-            font-size: 2rem;
-            font-weight: bold;
+            font-size: 1.8rem;
+            font-weight: 700;
             color: #fff !important;
+            letter-spacing: 1px;
             transition: all 0.3s ease;
         }
 
         .navbar-brand:hover {
-            color: #ffcc00 !important;
-            transform: scale(1.1);
+            color: #6a11cb !important;
+            transform: translateY(-2px);
         }
 
         .nav-link {
-            color: #ddd !important;
-            transition: 0.3s;
+            color: #e0e0e0 !important;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin: 0 8px;
         }
 
         .nav-link:hover {
-            color: #ffcc00 !important;
-            transform: scale(1.05);
+            color: #6a11cb !important;
+            transform: translateY(-2px);
         }
 
-        /* 🔥 Buttons with gradient and hover effect */
+        /* Mobile Navbar Improvements */
+        @media (max-width: 992px) {
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+            
+            .navbar-collapse {
+                background: rgba(15, 12, 41, 0.98);
+                padding: 20px;
+                border-radius: 10px;
+                margin-top: 15px;
+            }
+        }
+
+        /* 🔥 Professional Button Styling */
         .btn-custom {
             background: linear-gradient(135deg, #6a11cb, #2575fc);
             color: #fff;
             border: none;
-            padding: 10px 20px;
-            border-radius: 30px;
-            transition: all 0.3s;
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
         }
 
         .btn-custom:hover {
-            background: linear-gradient(135deg, #ffcc00, #ff6699);
-            transform: scale(1.05);
-            box-shadow: 0 0 12px #ffcc00;
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(106, 17, 203, 0.5);
         }
 
         .btn-danger {
-            background: #ff4d4d;
-            transition: all 0.3s;
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 65, 108, 0.3);
         }
 
         .btn-danger:hover {
-            background: #ff1a1a;
-            transform: scale(1.05);
-            box-shadow: 0 0 12px #ff4d4d;
+            background: linear-gradient(135deg, #ff4b2b, #ff416c);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 65, 108, 0.5);
         }
 
         .btn-primary {
-            background: #1e90ff;
-            transition: all 0.3s;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
 
         .btn-primary:hover {
-            background: #007bff;
-            transform: scale(1.05);
-            box-shadow: 0 0 12px #1e90ff;
+            background: linear-gradient(135deg, #764ba2, #667eea);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.3);
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #38ef7d, #11998e);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(17, 153, 142, 0.5);
         }
 
         /* 📝 Tweet Card Styling */
@@ -113,33 +160,52 @@
             box-shadow: 0 0 18px #00f7ff;
         }
 
-        /* 🔥 Main Content */
+        /* 🔥 Main Content - Professional Container */
         .container {
-            margin-top: 50px;
+            margin-top: 30px;
+            margin-bottom: 30px;
             padding: 30px;
-            background: #1e1e1e;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+            background: rgba(30, 30, 46, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
         }
 
-        /* 💎 Footer Styling (Fixed at Bottom) */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin-top: 20px;
+            }
+        }
+
+        /* 💎 Footer Styling - Professional */
         footer {
-            background: #0f0c29;
-            color: #fff;
-            padding: 15px 0;
+            background: rgba(15, 12, 41, 0.95);
+            backdrop-filter: blur(10px);
+            color: #e0e0e0;
+            padding: 20px 0;
             text-align: center;
-            box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
             width: 100%;
+            border-top: 1px solid rgba(106, 17, 203, 0.3);
         }
 
         footer a {
-            color: #ffcc00;
+            color: #6a11cb;
             text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
 
         footer a:hover {
-            color: #fff;
-            text-decoration: underline;
+            color: #2575fc;
+            text-decoration: none;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 0.95rem;
         }
 
     </style>

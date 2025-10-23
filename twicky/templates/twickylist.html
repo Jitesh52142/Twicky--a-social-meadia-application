@@ -6,61 +6,134 @@ Twicky - A Social Media Platform
 
 {% block content %}  
 
-<div class="container mt-5">
-    <h1 class="text-center mb-4">📃 Your Tweets</h1>
+<div class="container mt-4">
+    <!-- Header Section -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-white mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+            <i class="fas fa-comments"></i> Your Feed
+        </h1>
+        <p class="text-muted">Share your thoughts with the world</p>
+    </div>
 
     <!-- Create Tweet Button -->
-    <div class="mb-4">
-        <a class="btn btn-primary btn-lg px-4 py-2 rounded-pill shadow-lg" 
+    <div class="mb-5 text-center">
+        <a class="btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-lg" 
            href="{% url 'Twicky_create' %}" 
-           style="transition: all 0.3s; font-size: 18px;">
-            ➕ Create a Tweet
+           style="font-size: 1.1rem; font-weight: 600; transition: all 0.3s;">
+            <i class="fas fa-plus-circle"></i> Create New Tweet
         </a>
     </div>
 
-    <!-- Horizontal Flex Layout -->
-    <div class="d-flex flex-row flex-wrap gap-4 justify-content-center">
+    <!-- Tweets Grid Layout -->
+    <div class="row g-4 justify-content-center">
 
         {% for tweet in tweets %}
-        <div class="card shadow-lg rounded" style="width: 270px; min-height: 350px; transition: transform 0.3s;">
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+            <div class="card tweet-card shadow-lg h-100" 
+                 style="background: linear-gradient(135deg, #1e1e2f 0%, #2d2d44 100%); 
+                 border: 1px solid rgba(106, 17, 203, 0.3); 
+                 border-radius: 16px; 
+                 transition: all 0.3s ease;
+                 overflow: hidden;">
 
-            <!-- Conditional Image Rendering -->
-            {% if tweet.photo %}
-            <div style="width: 100%; height: 180px; overflow: hidden; border-top-left-radius: 8px; border-top-right-radius: 8px;">
-                <img src="{{ tweet.photo.url }}" class="card-img-top" alt="Tweet Image" 
-                     style="width: 100%; height: 100%; object-fit: cover;">
-            </div>
-            {% endif %}
-
-            <!-- Tweet Content -->
-            <div class="card-body d-flex flex-column justify-content-between">
-                <h5 class="card-title fw-bold">{{ tweet.user.username }}</h5>
-                <p class="card-text" style="max-width: 100%;">{{ tweet.text }}</p>
-                <small class="text-muted">🕒 {{ tweet.created_at|date:"F j, Y, g:i a" }}</small>
-
-                <!-- Action Buttons (Only for the Tweet Owner) -->
-                {% if tweet.user == request.user %}
-                <div class="mt-3 d-flex justify-content-between">
-                    <a href="{% url 'Twicky_edit' tweet.id %}" 
-                       class="btn btn-outline-success btn-sm rounded-pill shadow-sm px-3 py-1"
-                       style="transition: all 0.3s;">
-                        ✏️ Edit
-                    </a>
-                    <a href="{% url 'Twicky_delete' tweet.id %}" 
-                       class="btn btn-outline-danger btn-sm rounded-pill shadow-sm px-3 py-1"
-                       style="transition: all 0.3s;">
-                        🗑️ Delete
-                    </a>
+                <!-- Conditional Image Rendering -->
+                {% if tweet.photo %}
+                <div style="width: 100%; height: 200px; overflow: hidden; position: relative;">
+                    <img src="{{ tweet.photo.url }}" 
+                         class="card-img-top" 
+                         alt="Tweet Image" 
+                         style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+                         background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.3) 100%);"></div>
                 </div>
                 {% endif %}
+
+                <!-- Tweet Content -->
+                <div class="card-body d-flex flex-column" style="padding: 1.5rem;">
+                    <!-- User Info -->
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-2" 
+                             style="width: 40px; height: 40px; background: linear-gradient(135deg, #6a11cb, #2575fc); color: white; font-weight: bold;">
+                            {{ tweet.user.username|first|upper }}
+                        </div>
+                        <h5 class="card-title fw-bold mb-0 text-white">{{ tweet.user.username }}</h5>
+                    </div>
+
+                    <!-- Tweet Text -->
+                    <p class="card-text text-white mb-3" style="flex-grow: 1; font-size: 0.95rem; line-height: 1.5;">
+                        {{ tweet.text|truncatewords:30 }}
+                    </p>
+
+                    <!-- Timestamp -->
+                    <div class="mb-3">
+                        <small class="text-muted">
+                            <i class="far fa-clock"></i> {{ tweet.created_at|date:"M j, Y - g:i A" }}
+                        </small>
+                    </div>
+
+                    <!-- Action Buttons (Only for the Tweet Owner) -->
+                    {% if tweet.user == request.user %}
+                    <div class="d-flex gap-2 mt-auto">
+                        <a href="{% url 'Twicky_edit' tweet.id %}" 
+                           class="btn btn-sm btn-success flex-fill rounded-pill shadow-sm"
+                           style="transition: all 0.3s; font-weight: 600;">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a href="{% url 'Twicky_delete' tweet.id %}" 
+                           class="btn btn-sm btn-danger flex-fill rounded-pill shadow-sm"
+                           style="transition: all 0.3s; font-weight: 600;">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
 
         {% empty %}
-        <p class="text-center mt-4">No tweets found. Create one!</p>
+        <div class="col-12">
+            <div class="text-center py-5">
+                <i class="fas fa-inbox" style="font-size: 4rem; color: #6a11cb; opacity: 0.5;"></i>
+                <h3 class="text-white mt-3 mb-2">No tweets yet</h3>
+                <p class="text-muted">Be the first to share something!</p>
+                <a href="{% url 'Twicky_create' %}" class="btn btn-primary mt-3 px-4 py-2 rounded-pill">
+                    <i class="fas fa-plus"></i> Create Your First Tweet
+                </a>
+            </div>
+        </div>
         {% endfor %}
 
     </div>
 </div>
+
+<!-- Custom Styles for Tweet Cards -->
+<style>
+    .tweet-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 40px rgba(106, 17, 203, 0.4) !important;
+        border-color: rgba(106, 17, 203, 0.6) !important;
+    }
+
+    .tweet-card img:hover {
+        transform: scale(1.05);
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, #11998e, #38ef7d) !important;
+    }
+
+    .btn-danger {
+        background: linear-gradient(135deg, #ff416c, #ff4b2b) !important;
+    }
+
+    @media (max-width: 576px) {
+        .display-4 {
+            font-size: 2rem;
+        }
+    }
+</style>
+
+<!-- Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 {% endblock %}

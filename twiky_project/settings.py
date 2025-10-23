@@ -1,19 +1,15 @@
 from pathlib import Path
-import os 
+import os
+from decouple import config 
 
 # ✅ Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ✅ Security settings
-SECRET_KEY = 'django-insecure-#sla7u9uuva*6v+4gt3)whx2mf74+fc715w8punbo24rmpzzjr'
-DEBUG = True
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-#sla7u9uuva*6v+4gt3)whx2mf74+fc715w8punbo24rmpzzjr')
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    'trial-twicky.onrender.com',      # Old Render URL
-    'trial-twicky-3.onrender.com',    # New Render URL (add this)
-]
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.vercel.app').split(',')
 
 
 # ✅ Application definition
@@ -30,6 +26,7 @@ INSTALLED_APPS = [
 # ✅ Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -61,11 +58,15 @@ TEMPLATES = [
 # ✅ WSGI Application
 WSGI_APPLICATION = 'twiky_project.wsgi.application'
 
-# ✅ Database
+# ✅ Database - MongoDB Configuration
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'djongo',
+        'NAME': 'twicky',
+        'ENFORCE_SCHEMA': False,
+        'CLIENT': {
+            'host': config('MONGODB_URI', default='mongodb+srv://Jitesh001:Jitesh001@twicky.fxotzly.mongodb.net/'),
+        }
     }
 }
 
@@ -85,8 +86,16 @@ USE_TZ = True
 
 # ✅ Static & Media Files Configuration
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # For production
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Create static directory if it doesn't exist
+STATICFILES_DIRS = []
+static_dir = os.path.join(BASE_DIR, 'static')
+if os.path.exists(static_dir):
+    STATICFILES_DIRS = [static_dir]
+
+# WhiteNoise configuration for static files
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ✅ Media configuration for image uploads
 MEDIA_URL = '/media/'
@@ -99,3 +108,15 @@ LOGOUT_REDIRECT_URL = '/twicky/'
 
 # ✅ Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ✅ Security Settings for Production
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
