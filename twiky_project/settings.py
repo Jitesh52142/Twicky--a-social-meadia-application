@@ -9,6 +9,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-#sla7u9uuva*6v+4gt3)whx2mf74+fc715w8punbo24rmpzzjr')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
+# Force rebuild marker - Vercel cache fix
+VERCEL_FORCE_REBUILD = "2024-10-24-0019"
+
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.vercel.app').split(',')
 
 
