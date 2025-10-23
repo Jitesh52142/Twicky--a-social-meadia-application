@@ -90,10 +90,16 @@ USE_TZ = True
 
 # ✅ Static & Media Files Configuration
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Create staticfiles directory if it doesn't exist (for Vercel)
-os.makedirs(STATIC_ROOT, exist_ok=True)
+# Use /tmp for static files on Vercel (writable directory)
+if os.environ.get('VERCEL'):
+    STATIC_ROOT = '/tmp/staticfiles'
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Create staticfiles directory only in non-Vercel environments
+if not os.environ.get('VERCEL'):
+    os.makedirs(STATIC_ROOT, exist_ok=True)
 
 # Create static directory if it doesn't exist
 STATICFILES_DIRS = []
